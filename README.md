@@ -1,4 +1,4 @@
-# Local RAG/MCP Knowledge Base Assistant
+# RAG/MCP Knowledge Base Assistant
 
 # 📋 The Problem
 

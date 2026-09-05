@@ -3,11 +3,20 @@
 Company Knowledge Base Assistant - Main Entry Point
 """
 
+import logging
 import sys
+
 from assistant import CompanyKBAssistant
+from config import RAG_LOG_LEVEL
+
 
 def main():
     """Main entry point for the assistant."""
+    logging.basicConfig(
+        level=getattr(logging, RAG_LOG_LEVEL.upper(), logging.WARNING),
+        format="%(levelname)s %(name)s: %(message)s",
+    )
+
     if len(sys.argv) > 1 and sys.argv[1] == "build-index":
         # Build index mode
         from rag.build_index import build_index

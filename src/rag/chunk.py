@@ -22,6 +22,16 @@ def chunk_text(text: str):
     return chunks
 
 
+def make_chunk_id(source: str, index: int) -> str:
+    """Build a stable chunk id shared by the FAISS metadata and the FTS5 index.
+
+    The id only depends on the document path and the position of the chunk
+    inside that document, so rebuilding the index over unchanged documents
+    produces exactly the same ids in both stores.
+    """
+    return f"{source}::{index}"
+
+
 def chunk_documents(documents):
     """Chunk all documents into smaller pieces."""
     all_chunks = []
@@ -32,7 +42,10 @@ def chunk_documents(documents):
             all_chunks.append({
                 "text": chunk,
                 "source": doc["path"],
-                "chunk_id": idx
+                # Stable, globally unique id (used by FAISS metadata, FTS5 and RRF)
+                "chunk_id": make_chunk_id(doc["path"], idx),
+                # Position of the chunk inside its own document
+                "chunk_index": idx,
             })
 
     return all_chunks

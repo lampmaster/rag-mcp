@@ -67,10 +67,24 @@ python -m rag.build_index
 
 This will:
 - Load all documents from the `docs/` directory
-- Chunk them into smaller pieces
+- Chunk them into smaller pieces (each chunk gets a stable `chunk_id`)
 - Generate embeddings
 - Build the FAISS index
-- Save `index.faiss` and `chunks.pkl`
+- Build the SQLite FTS5 full-text index from the same chunks
+- Save `index.faiss`, `chunks.pkl` and `fts_index.db`
+
+## Running the tests
+
+```bash
+python -m pytest tests -q
+```
+
+## Benchmark (vector-only vs hybrid retrieval)
+
+```bash
+# from the repository root
+python benchmark/run_benchmark.py --model qwen3:1.7b --rebuild
+```
 
 ## Usage
 
@@ -108,6 +122,10 @@ When you add new documents or update existing ones:
 - Check that `docs/` directory exists and contains files
 - Verify `DOCUMENTS_DIR` in `config.py` is correct
 - Ensure files have supported extensions (`.txt`, `.md`, `.pdf`, `.docx`)
+
+### Retrieval looks purely semantic / full-text results are missing
+- Rebuild the index so that `fts_index.db` is created: `python main.py build-index`
+- Set `RAG_LOG_LEVEL=INFO` to see expansion keywords, per-retriever latencies and the fused chunk ids
 
 ### Ollama connection errors
 - Make sure Ollama is running: `ollama list`

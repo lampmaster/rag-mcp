@@ -14,6 +14,10 @@ index.faiss
 *.pkl
 chunks.pkl
 
+# SQLite FTS5 index
+fts_index.db
+*.db
+
 # IDE
 .vscode/
 .idea/

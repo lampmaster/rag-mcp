@@ -13,3 +13,8 @@ rich>=14.2.0
 
 # MCP
 fastmcp>=0.1.0
+
+# Full-text search uses the standard library sqlite3 module (FTS5) - no extra dependency.
+
+# Development
+pytest>=8.0.0
